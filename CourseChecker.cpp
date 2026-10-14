@@ -2,9 +2,7 @@
 #include <string>
 using namespace std;
 
-
 const int SIZE = 49;
-
 
 string course[SIZE] = {
     "CMP 120", "CMP 220", "COE 221", "ELE 211", "ELE 211",
@@ -58,16 +56,23 @@ int credit[SIZE] = {
     3, 3, 3, 3
 };
 
+void printTag(string t) {
+    if (t != "before" && t != "credits") {
+        cout << " [can take at the same time]";
+    }
+    cout << endl;
+}
 
 void findPrereq(string name) {
     bool found = false;
 
     for (int i = 0; i < SIZE; i++) {
         if (course[i] == name) {
-            if (!found) {   
+            if (!found) {
                 cout << name << " (" << credit[i] << " credits) needs:" << endl;
             }
-            cout << "  - " << prereq[i] << " [" << type[i] << "]" << endl;
+            cout << "  - " << prereq[i];
+            printTag(type[i]);
             found = true;
         }
     }
@@ -77,17 +82,16 @@ void findPrereq(string name) {
     }
 }
 
-
 void findOpens(string name) {
     bool found = false;
 
     for (int i = 0; i < SIZE; i++) {
-       
         if (prereq[i].find(name) != string::npos) {
             if (!found) {
                 cout << name << " opens:" << endl;
             }
-            cout << "  - " << course[i] << " (" << credit[i] << " credits) [" << type[i] << "]" << endl;
+            cout << "  - " << course[i] << " (" << credit[i] << " credits)";
+            printTag(type[i]);
             found = true;
         }
     }
@@ -96,7 +100,6 @@ void findOpens(string name) {
         cout << name << " doesn't open any course in the list" << endl;
     }
 }
-
 
 int main() {
     string choice;
@@ -116,12 +119,10 @@ int main() {
 
             if (choice == "1") {
                 findPrereq(name);
-            }
-            else {
+            } else {
                 findOpens(name);
             }
-        }
-        else if (choice != "3") {
+        } else if (choice != "3") {
             cout << "Invalid choice, pick 1, 2 or 3" << endl;
         }
 
